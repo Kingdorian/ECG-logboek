@@ -1,5 +1,6 @@
 package com.kingdorian.android.ecg_logboek;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,12 +21,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView lView = (ListView) findViewById(R.id.actList);
-        String[] data = {"Ding1", "Ding2", "Nog een ding", "Ander ding?", "Thingy", "Optie"};
-        final CheckBoxArrayAdapter adapter = new CheckBoxArrayAdapter(this, R.layout.listitem, data);
-        System.out.println("hey1");
-        lView.setAdapter(adapter);
+//        ListView lView = (ListView) findViewById(R.id.actList);
+//        String[] data = {"Ding1", "Ding2", "Nog een ding", "Ander ding?", "Thingy", "Optie"};
+//        final CheckBoxArrayAdapter adapter = new CheckBoxArrayAdapter(this, R.layout.listitem, data);
+//        System.out.println("hey1");
+//        lView.setAdapter(adapter);
 
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptView = li.inflate(R.layout.prompt, null);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setView(promptView);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("ok", null);
+
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
     private class CheckBoxArrayAdapter extends ArrayAdapter<String> {
 
