@@ -37,6 +37,16 @@ public class ActivityData {
         return data;
     }
 
+    public ArrayList<HourEntry> getDataArrayList() {
+        ArrayList<HourEntry> d = new ArrayList<>();
+        for(HourEntry e : data) {
+            if(e!=null){
+                d.add(e);
+            }
+        }
+        return d;
+    }
+
     public void addHourEntry(HourEntry hr) {
         data[hr.getId()] = hr;
     }
