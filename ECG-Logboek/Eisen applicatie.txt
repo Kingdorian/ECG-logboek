@@ -1,0 +1,13 @@
+﻿Wij willen aantonen dat een digitaal logboek de gebruiker beter houdt aan het moeten invullen. Omdat wij niet al onze ideeën in een app kunnen verwerken door gebrek aan tijd en programmeerkennis, maken wij voor dit moment een testapplicatie. Deze testapplicatie moet kunnen laten zien dat het digitaal invullen van het logboek op je smartphone beter werkt dan de papieren equivalent. Het gebruik van activiteitsmeters laten we hierbij buiten beschouwing.
+
+De applicatie moet de gebruiker een melding geven om het uur, twee etmalen lang. Deze melding geeft een geluid en een trilling. De melding kan niet worden weggedrukt, wel worden “stil” gezet, oftewel het geluid kan worden gedempt. Pas als het logboek is ingevuld voor dat uur, dan verdwijnt de melding. Als de telefoon op stil staat, dan zullen de meldingen ook geen geluid geven. Tijdens slaap worden er dus wel meldingen gegeven, maar deze halen de gebruiker niet uit zijn/haar slaap.
+
+Als de applicatie wordt opgestart, wordt er een korte omschrijving gegeven hoe de applicatie werkt. Als de gebruiker het begrijpt en akkoord gaat, krijgt de gebruiker een scherm met een knop de mogelijkheid gegeven om het onderzoek te starten. Vanaf dan zal de applicatie ieder geheel uur, dus niet geheel uur na het starten, een melding geven.
+//Wat is makkelijker te programmeren? En kunnen we tegelijk duidelijk maken aan de gebruiker welk uur dan bewerkt wordt?
+
+Als de gebruiker op de melding klikt, komt hij/zij bij een tekstvak met daarboven om welk uur het gaat. In dit tekstvak kan de gebruiker typen. De gebruiker moet proberen op de minuut precies aan te geven wat hij/zij heeft gedaan en/of hij/zij heeft gevoeld. Wanneer dit is gedaan, kan het worden opgeslagen.
+
+Als de gebruiker de applicatie opent tijdens het onderzoek, kan hij/zij de uren overzien en zo nodig aanpassingen maken of alvast activiteiten van het huidige uur invoeren. Als de gebruiker iets afwijkends voelt, kan dit dus ook meteen in het logboek worden beschreven in het huidige uur. 
+
+Na de 48 uur is de test klaar en wordt het laatste uur ingevuld door de gebruiker. Vervolgens kan hij/zij het volledige logboek valideren en daarna kunnen er geen aanpassingen meer gemaakt worden. De gebruiker zal dan ook geen meldingen meer krijgen. Het logboek wordt opgeslagen op de telefoon en kan daarna door de arts worden uitgelezen.
+//Hoe kan de arts het logboek uitlezen?

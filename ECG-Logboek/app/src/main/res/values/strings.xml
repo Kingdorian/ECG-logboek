@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ECG-Logboek</string>
+    <string name="AlertTitle">ECG Logboek</string>
+    <string name="beforeTimeSubTitle">Wat heeft u tussen&#160;</string>
+    <string name="betweenTimeSubTitle">&#160;en&#160;</string>
+    <string name="afterTimeSubTitle"> &#160;gedaan?</string>
+    <string name="ok">ok</string>
+</resources>
