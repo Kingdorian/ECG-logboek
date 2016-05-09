@@ -9,20 +9,18 @@ import java.util.Date;
  */
 public class HourEntry {
 
-    private Date startTime;
-    private Date endTime;
+    private int id;
     private String description;
 
-    public void HourEntry(Date startTime, Date endTime, String description) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public HourEntry(int id, String description) {
+        this.id = id;
+        this.description = description;
     }
 
     public String toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("start", startTime.toString());
-            jsonObject.put("end", endTime.toString());
+            jsonObject.put("start", id);
             jsonObject.put("description", description);
         } catch(Exception e) {
             e.printStackTrace();
@@ -30,24 +28,16 @@ public class HourEntry {
         return jsonObject.toString();
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setId() {
+        this.id = id;
     }
 
     public void setDescription(String description) {

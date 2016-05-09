@@ -16,13 +16,11 @@ import java.util.ArrayList;
 /**
  * Created by dorian on 9-5-16.
  */
-public class AcitvityData {
+public class ActivityData {
 
     private ArrayList<HourEntry> data = new ArrayList<HourEntry>();
 
     String FILENAME = "activityData";
-
-
 
     public ArrayList<HourEntry> getData() {
         return data;
@@ -47,7 +45,7 @@ public class AcitvityData {
     public void readData(Context ctx) {
         try {
             FileInputStream fis = ctx.openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader();
+            InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader buffered = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String line;

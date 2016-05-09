@@ -9,18 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    ActivityData data = new ActivityData();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        data.readData(getApplication().getBaseContext());
+        System.out.println("hey");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -32,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                GregorianCalendar start = new GregorianCalendar(2016, 7, 10, 10, 00);
+                GregorianCalendar end = new GregorianCalendar(2016, 7, 10, 11, 00);
+                data.addHourEntry(new HourEntry(start.getTime(), end.getTime(), "a description"));
+                data.writeData(getApplication().getBaseContext());
+                data.readData(getApplication().getBaseContext());
             }
         });
         AlertDialog dialog = dialogBuilder.create();
