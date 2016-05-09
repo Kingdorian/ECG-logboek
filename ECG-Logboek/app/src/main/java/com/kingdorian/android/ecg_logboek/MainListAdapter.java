@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MainListAdapter extends ArrayAdapter<HourEntry> {
     Context context;
     ArrayList<HourEntry> entries;
+    ActivityData data;
     private static LayoutInflater inflater;
 
 
@@ -24,9 +25,10 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
      * @param resource the id of the rersource
      * @param projects the projects the listitem has to represent
      */
-    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects) {
+    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects, ActivityData data) {
         super(context, resource, projects);
         entries = projects;
+        this.data = data;
     }
     public MainListAdapter(Context context, int resource){
         super(context, resource);
@@ -47,9 +49,19 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
         TextView descriptionView = (TextView) v.findViewById(R.id.description);
 
         if(descriptionView != null){
-            descriptionView.setText(getItem(position).getDescription()+"");
+            descriptionView.setText(entries.get(position).getDescription()+"");
+        }
+        TextView timeView = (TextView) v.findViewById(R.id.time);
+
+        if(timeView != null){
+            timeView.setText(data.getStartTime(entries.get(position).getId())+":00-"+data.getEndTime(entries.get(position).getId())+":00");
         }
         return v;
+    }
+
+    public void setData(ArrayList<HourEntry> he) {
+        entries = he;
+        notifyDataSetChanged();
     }
 
 }

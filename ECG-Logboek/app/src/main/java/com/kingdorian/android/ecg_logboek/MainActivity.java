@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         data.readData(getApplication().getBaseContext());
 
         ListView listview = (ListView) findViewById(R.id.listView);
-        adapter = new MainListAdapter(this, R.layout.activity_main, data.getDataArrayList());
+        adapter = new MainListAdapter(this, R.layout.activity_main, data.getDataArrayList(), data);
         listview.setAdapter(adapter);
 
         LayoutInflater li = LayoutInflater.from(this);
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 String input = ((EditText) promptView.findViewById(R.id.editTextDialogUserInput)).getText().toString();
                 data.addHourEntry(new HourEntry(hourId, input));
                 data.writeData(getApplication().getBaseContext());
+                adapter.setData(data.getDataArrayList());
                 adapter.notifyDataSetChanged();
             }
         });
