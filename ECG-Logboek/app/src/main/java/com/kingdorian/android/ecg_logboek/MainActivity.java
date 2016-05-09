@@ -2,12 +2,14 @@ package com.kingdorian.android.ecg_logboek;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,19 +23,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        ListView lView = (ListView) findViewById(R.id.actList);
-//        String[] data = {"Ding1", "Ding2", "Nog een ding", "Ander ding?", "Thingy", "Optie"};
-//        final CheckBoxArrayAdapter adapter = new CheckBoxArrayAdapter(this, R.layout.listitem, data);
-//        System.out.println("hey1");
-//        lView.setAdapter(adapter);
 
         LayoutInflater li = LayoutInflater.from(this);
-        View promptView = li.inflate(R.layout.prompt, null);
+        final View promptView = li.inflate(R.layout.prompt, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(promptView);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setPositiveButton("ok", null);
+        dialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
