@@ -28,6 +28,29 @@ public class HourEntry {
             e.printStackTrace();
         }
         return jsonObject.toString();
+    }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
