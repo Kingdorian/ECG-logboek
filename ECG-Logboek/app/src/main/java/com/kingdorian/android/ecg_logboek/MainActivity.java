@@ -2,94 +2,129 @@ package com.kingdorian.android.ecg_logboek;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    MainListAdapter adapter;
+    ActivityData data;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        ListView lView = (ListView) findViewById(R.id.actList);
-//        String[] data = {"Ding1", "Ding2", "Nog een ding", "Ander ding?", "Thingy", "Optie"};
-//        final CheckBoxArrayAdapter adapter = new CheckBoxArrayAdapter(this, R.layout.listitem, data);
-//        System.out.println("hey1");
-//        lView.setAdapter(adapter);
+
+        data = new ActivityData(new GregorianCalendar(2016, 4, 9, 10, 00));
+        data.readData(getApplication().getBaseContext());
+
+        ListView listview = (ListView) findViewById(R.id.listView);
+        adapter = new MainListAdapter(this, R.layout.activity_main, data.getDataArrayList(), data);
+        listview.setAdapter(adapter);
 
         LayoutInflater li = LayoutInflater.from(this);
-        View promptView = li.inflate(R.layout.prompt, null);
+        final View promptView = li.inflate(R.layout.prompt, null);
+        Resources res = getResources();
+        final int hourId = (int) data.getCurrentHour();
+        String subTitle = res.getString(R.string.beforeTimeSubTitle);
+        subTitle += data.getStartTime(hourId) + ":00" + res.getString(R.string.betweenTimeSubTitle);
+        subTitle += data.getEndTime(hourId) + ":00" + res.getString(R.string.afterTimeSubTitle);
+        ((TextView) promptView.findViewById(R.id.subTitle)).setText(subTitle);
+        if (data.getData()[hourId] != null) {
+            ((TextView) promptView.findViewById(R.id.editTextDialogUserInput)).setText(data.getData()[hourId].getDescription());
+        }
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(promptView);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setPositiveButton("ok", null);
-
+        dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String input = ((EditText) promptView.findViewById(R.id.editTextDialogUserInput)).getText().toString();
+                data.addHourEntry(new HourEntry(hourId, input));
+                data.writeData(getApplication().getBaseContext());
+                adapter.setData(data.getDataArrayList());
+                adapter.notifyDataSetChanged();
+            }
+        });
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
     }
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
     }
-    private class CheckBoxArrayAdapter extends ArrayAdapter<String> {
-
-        Context context;
-        String[] data;
-        int viewResId;
-        private LayoutInflater inflater = null;
-
-        public CheckBoxArrayAdapter(Context context, int textViewResourceId, String[] data){
-            super(context, textViewResourceId);
-            System.out.println("hey3");
-            this.context = context;
-            this.data = data;
-            this.viewResId = textViewResourceId;
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            System.out.println("hey2");
-            View view = convertView;
-            if (view == null ) {
-                view = inflater.inflate(viewResId, null);
-            }
-            TextView text = (TextView)view.findViewById(R.id.name);
-            text.setText(data[position]);
-            return view;
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return data.length;
-        }
-
-        @Override
-        public String getItem(int position) {
-            // TODO Auto-generated method stub
-            return data[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.kingdorian.android.ecg_logboek/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.kingdorian.android.ecg_logboek/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }
