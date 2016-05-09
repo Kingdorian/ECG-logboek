@@ -17,11 +17,11 @@ public class AcitvityData {
         return data;
     }
 
-    public static addHourEntry(HourEntry hr) {
+    public static void addHourEntry(HourEntry hr) {
         data.add(hr);
     }
 
-    public static writeData() {
+    public static void writeData() {
         JSONArray dataArray = new JSONArray();
         JSONObject jsonObj = new JSONObject();
         for(HourEntry entry : data) {
