@@ -3,6 +3,7 @@ package com.kingdorian.android.ecg_logboek;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        data = new ActivityData(new GregorianCalendar(2016, 10, 7, 12, 00));
+        data = new ActivityData(new GregorianCalendar(2016, 4, 9, 10, 00));
         data.readData(getApplication().getBaseContext());
         System.out.println("hey");
         super.onCreate(savedInstanceState);
@@ -28,13 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         LayoutInflater li = LayoutInflater.from(this);
         final View promptView = li.inflate(R.layout.prompt, null);
+        Resources res = getResources();
+        final int hourId = (int)data.getCurrentHour();
+        System.out.println(hourId);
+        String subTitle = res.getString(R.string.beforeTimeSubTitle);
+        subTitle+= data.getStartTime(hourId)+ ":00" +  res.getString(R.string.betweenTimeSubTitle);
+        subTitle+=  data.getEndTime(hourId) + ":00" + res.getString(R.string.afterTimeSubTitle);
+        ((TextView)promptView.findViewById(R.id.subTitle)).setText(subTitle);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setView(promptView);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                data.addHourEntry(new HourEntry(0, "a description"));
+                data.addHourEntry(new HourEntry(hourId, "a description"));
                 data.writeData(getApplication().getBaseContext());
                 data.readData(getApplication().getBaseContext());
             }

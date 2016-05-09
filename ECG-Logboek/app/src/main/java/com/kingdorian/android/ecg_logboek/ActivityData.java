@@ -2,6 +2,7 @@ package com.kingdorian.android.ecg_logboek;
 
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.format.Time;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by dorian on 9-5-16.
@@ -62,6 +65,7 @@ public class ActivityData {
             buffered.close();
             isr.close();
             System.out.println(sb.toString());
+            // TODO parse and add to arraylist
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,12 +81,37 @@ public class ActivityData {
         }
         try {
             obj.put("startTime", calendar.getTime().toString());
-            obj.put("data", obj);
+            obj.put("data", dataArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(dataArray.toString());
-        return dataArray.toString();
+
+        System.out.println(obj.toString() + "1");
+        return obj.toString();
     }
 
+    public long getCurrentHour() {
+        Calendar now = new GregorianCalendar();
+        return (now.getTimeInMillis() - calendar.getTimeInMillis()) /1000 /3600;
+    }
+
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public int getStartTime(int id) {
+        Calendar time = new GregorianCalendar();
+        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*id));
+        time.getTimeInMillis();
+        System.out.println(time.toString());
+        return time.get(Calendar.HOUR_OF_DAY);
+    }
+    public int getEndTime(int id) {
+        Calendar time = new GregorianCalendar();
+        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*(1+id)));
+        time.getTimeInMillis();
+        System.out.println(time.toString());
+        return time.get(Calendar.HOUR_OF_DAY);
+    }
 }
