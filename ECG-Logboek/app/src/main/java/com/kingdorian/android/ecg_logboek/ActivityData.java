@@ -1,8 +1,10 @@
 package com.kingdorian.android.ecg_logboek;
 
 import android.content.Context;
+import android.test.ActivityInstrumentationTestCase2;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,27 +14,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by dorian on 9-5-16.
  */
 public class ActivityData {
 
-    private ArrayList<HourEntry> data = new ArrayList<HourEntry>();
+    private HourEntry[] data = new HourEntry[48];
+    private Calendar calendar;
 
     String FILENAME = "activityData";
 
-    public ArrayList<HourEntry> getData() {
+    public ActivityData(Calendar calender) {
+        this.calendar = calender;
+    }
+
+    public HourEntry[] getData() {
         return data;
     }
 
     public void addHourEntry(HourEntry hr) {
-        data.add(hr);
+        data[hr.getId()] = hr;
     }
 
     public void writeData(Context ctx) {
 
-        //TODO Write to file http://developer.android.com/guide/topics/data/data-storage.html
         try {
             FileOutputStream fos = ctx.openFileOutput(FILENAME, ctx.MODE_PRIVATE);
             fos.write(getDataJSON().getBytes());
@@ -61,9 +68,18 @@ public class ActivityData {
     }
 
     public String getDataJSON() {
+        JSONObject obj = new JSONObject();
         JSONArray dataArray = new JSONArray();
         for(HourEntry entry : data) {
-            dataArray.put(entry.toJSON());
+            if(entry != null) {
+                dataArray.put(entry.toJSON());
+            }
+        }
+        try {
+            obj.put("startTime", calendar.getTime().toString());
+            obj.put("data", obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         System.out.println(dataArray.toString());
         return dataArray.toString();

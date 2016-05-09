@@ -16,10 +16,11 @@ import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityData data = new ActivityData();
+    ActivityData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        data = new ActivityData(new GregorianCalendar(2016, 10, 7, 12, 00));
         data.readData(getApplication().getBaseContext());
         System.out.println("hey");
         super.onCreate(savedInstanceState);
@@ -33,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GregorianCalendar start = new GregorianCalendar(2016, 7, 10, 10, 00);
-                GregorianCalendar end = new GregorianCalendar(2016, 7, 10, 11, 00);
-                data.addHourEntry(new HourEntry(start.getTime(), end.getTime(), "a description"));
+                data.addHourEntry(new HourEntry(0, "a description"));
                 data.writeData(getApplication().getBaseContext());
                 data.readData(getApplication().getBaseContext());
             }
