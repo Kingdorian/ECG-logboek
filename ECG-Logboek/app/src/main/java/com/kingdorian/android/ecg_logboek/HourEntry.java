@@ -20,7 +20,7 @@ public class HourEntry {
     public String toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("start", id);
+            jsonObject.put("id", id);
             jsonObject.put("description", description);
         } catch(Exception e) {
             e.printStackTrace();

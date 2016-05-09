@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         data = new ActivityData(new GregorianCalendar(2016, 4, 9, 10, 00));
         data.readData(getApplication().getBaseContext());
-        System.out.println("hey");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         final View promptView = li.inflate(R.layout.prompt, null);
         Resources res = getResources();
         final int hourId = (int)data.getCurrentHour();
-        System.out.println(hourId);
         String subTitle = res.getString(R.string.beforeTimeSubTitle);
         subTitle+= data.getStartTime(hourId)+ ":00" +  res.getString(R.string.betweenTimeSubTitle);
         subTitle+=  data.getEndTime(hourId) + ":00" + res.getString(R.string.afterTimeSubTitle);

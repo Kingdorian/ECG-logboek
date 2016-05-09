@@ -64,8 +64,20 @@ public class ActivityData {
             }
             buffered.close();
             isr.close();
-            System.out.println(sb.toString());
-            // TODO parse and add to arraylist
+            String result = sb.toString();
+            try {
+                JSONObject obj = new JSONObject(result);
+                JSONArray dataArray = obj.getJSONArray("data");
+                for(int i = 0; i < dataArray.length(); i++) {
+                    String element = dataArray.getString(i);
+                    JSONObject el = new JSONObject(element);
+                    data[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
+                    System.out.println(data[el.getInt("id")].toJSON());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +98,7 @@ public class ActivityData {
             e.printStackTrace();
         }
 
-        System.out.println(obj.toString() + "1");
+        System.out.println(obj.toString());
         return obj.toString();
     }
 
@@ -102,16 +114,12 @@ public class ActivityData {
 
     public int getStartTime(int id) {
         Calendar time = new GregorianCalendar();
-        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*id));
-        time.getTimeInMillis();
-        System.out.println(time.toString());
+        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*(id-1)));
         return time.get(Calendar.HOUR_OF_DAY);
     }
     public int getEndTime(int id) {
         Calendar time = new GregorianCalendar();
-        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*(1+id)));
-        time.getTimeInMillis();
-        System.out.println(time.toString());
+        time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*id));
         return time.get(Calendar.HOUR_OF_DAY);
     }
 }
