@@ -1,5 +1,7 @@
 package com.kingdorian.android.ecg_logboek;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,14 +37,17 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if(v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
             v = vi.inflate(R.layout.listitem, null);
         }
-        HourEntry p = getItem(position);
+
+
+        final HourEntry p = getItem(position);
+
 
         if(p == null) return null;
 

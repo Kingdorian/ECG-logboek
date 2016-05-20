@@ -1,16 +1,20 @@
 package com.kingdorian.android.ecg_logboek;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,32 +23,47 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
-
     MainListAdapter adapter;
-    ActivityData data;
+    static ActivityData data;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Calendar cal = Calendar.getInstance();
+        Intent intent = new Intent(this, HourlyNotificationService.class);
+        PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 10*1000, pendingintent);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        data = new ActivityData(new GregorianCalendar(2016, 4, 9, 10, 00));
+        data = new ActivityData(new GregorianCalendar(2016, 4, 17, 10, 00));
         data.readData(getApplication().getBaseContext());
 
         ListView listview = (ListView) findViewById(R.id.listView);
         adapter = new MainListAdapter(this, R.layout.activity_main, data.getDataArrayList(), data);
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int id, long arg3) {
+                        DialogFragment dialog = new EditEntryDialog(data, 1);
+                        dialog.show(getFragmentManager(), "Edit hour entry");
+
+                    }
+                });
 
         LayoutInflater li = LayoutInflater.from(this);
         final View promptView = li.inflate(R.layout.prompt, null);
@@ -54,24 +73,15 @@ public class MainActivity extends AppCompatActivity {
         subTitle += data.getStartTime(hourId) + ":00" + res.getString(R.string.betweenTimeSubTitle);
         subTitle += data.getEndTime(hourId) + ":00" + res.getString(R.string.afterTimeSubTitle);
         ((TextView) promptView.findViewById(R.id.subTitle)).setText(subTitle);
-        if (data.getData()[hourId] != null) {
+        if (hourId<47&&data.getData()[hourId] != null) {
             ((TextView) promptView.findViewById(R.id.editTextDialogUserInput)).setText(data.getData()[hourId].getDescription());
+        } else if (hourId > 47) {
+            data.clearData(this);
         }
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setView(promptView);
-        dialogBuilder.setCancelable(false);
-        dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String input = ((EditText) promptView.findViewById(R.id.editTextDialogUserInput)).getText().toString();
-                data.addHourEntry(new HourEntry(hourId, input));
-                data.writeData(getApplication().getBaseContext());
-                adapter.setData(data.getDataArrayList());
-                adapter.notifyDataSetChanged();
-            }
-        });
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
+
+        DialogFragment dialog = new EditEntryDialog(data, 1);
+        dialog.show(getFragmentManager(), "Edit hour entry");
+        adapter.notifyDataSetChanged();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -111,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+
+
+        data.writeData(this);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

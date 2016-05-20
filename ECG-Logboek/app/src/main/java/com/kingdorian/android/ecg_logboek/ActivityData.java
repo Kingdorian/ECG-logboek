@@ -117,6 +117,16 @@ public class ActivityData {
         return (now.getTimeInMillis() - calendar.getTimeInMillis()) /1000 /3600;
     }
 
+    public void clearData(Context ctx) {
+        try {
+            FileOutputStream fos = ctx.openFileOutput(FILENAME, ctx.MODE_PRIVATE);
+            fos.write("".getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Calendar getCalendar() {
         return calendar;
