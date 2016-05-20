@@ -27,7 +27,7 @@ public class ActivityData {
     private HourEntry[] data = new HourEntry[48];
     private Calendar calendar;
 
-    String FILENAME = "activityData";
+    static String FILENAME = "activityData";
 
     public ActivityData(Calendar calender) {
         this.calendar = calender;
@@ -62,35 +62,32 @@ public class ActivityData {
         }
     }
 
-    public void readData(Context ctx) {
-        try {
-            FileInputStream fis = ctx.openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader buffered = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while((line = buffered.readLine()) != null) {
-                sb.append(line);
-            }
-            buffered.close();
-            isr.close();
-            String result = sb.toString();
-            try {
-                JSONObject obj = new JSONObject(result);
-                JSONArray dataArray = obj.getJSONArray("data");
-                for(int i = 0; i < dataArray.length(); i++) {
-                    String element = dataArray.getString(i);
-                    JSONObject el = new JSONObject(element);
-                    data[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
-                    System.out.println(data[el.getInt("id")].toJSON());
-                }
+    static ActivityData readData(Context ctx) throws IOException, JSONException {
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        FileInputStream fis = ctx.openFileInput(FILENAME);
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader buffered = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line = buffered.readLine()) != null) {
+            sb.append(line);
         }
+        buffered.close();
+        isr.close();
+        String result = sb.toString();
+        JSONObject obj = new JSONObject(result);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(obj.get("startTime").toString()));
+        ActivityData data = new ActivityData(calendar);
+
+        JSONArray dataArray = obj.getJSONArray("data");
+        for(int i = 0; i < dataArray.length(); i++) {
+            String element = dataArray.getString(i);
+            JSONObject el = new JSONObject(element);
+            data.getData()[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
+            System.out.println(data.getData()[el.getInt("id")].toJSON());
+        }
+        return data;
     }
 
     public String getDataJSON() {

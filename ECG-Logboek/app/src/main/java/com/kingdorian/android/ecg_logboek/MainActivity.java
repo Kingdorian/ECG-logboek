@@ -40,17 +40,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Calendar cal = Calendar.getInstance();
-        Intent intent = new Intent(this, HourlyNotificationService.class);
-        PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
-        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 10*1000, pendingintent);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        data = new ActivityData(new GregorianCalendar(2016, 4, 17, 10, 00));
-        data.readData(getApplication().getBaseContext());
+        try {
+            data.readData(getApplication().getBaseContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (data == null ) {
+            firstStartup();
+        }
 
         ListView listview = (ListView) findViewById(R.id.listView);
         adapter = new MainListAdapter(this, R.layout.activity_main, data.getDataArrayList(), data);
@@ -139,5 +140,20 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    private void firstStartup() {
+        System.out.println("First time startup!");
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis((cal.getTimeInMillis()/3600000)*3600000 );
+        System.out.println("StartTime: " + cal.getTime().toString());
+        Intent intent = new Intent(this, HourlyNotificationService.class);
+        PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 60*60*1000, pendingintent);
+
+        data = new ActivityData(cal);
+        data.writeData(this);
     }
 }
