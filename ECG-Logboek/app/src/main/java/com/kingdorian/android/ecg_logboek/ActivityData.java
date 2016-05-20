@@ -24,20 +24,20 @@ import java.util.GregorianCalendar;
  */
 public class ActivityData {
 
-    private HourEntry[] data = new HourEntry[48];
-    private Calendar calendar;
+    private static HourEntry[] data = new HourEntry[48];
+    private static Calendar calendar;
 
     static String FILENAME = "activityData";
 
-    public ActivityData(Calendar calender) {
-        this.calendar = calender;
+    public static void setCalendar(Calendar cal) {
+        calendar = cal;
     }
 
-    public HourEntry[] getData() {
+    public static HourEntry[] getData() {
         return data;
     }
 
-    public ArrayList<HourEntry> getDataArrayList() {
+    public static ArrayList<HourEntry> getDataArrayList() {
         ArrayList<HourEntry> d = new ArrayList<>();
         for(HourEntry e : data) {
             if(e!=null){
@@ -47,11 +47,11 @@ public class ActivityData {
         return d;
     }
 
-    public void addHourEntry(HourEntry hr) {
+    public static void addHourEntry(HourEntry hr) {
         data[hr.getId()] = hr;
     }
 
-    public void writeData(Context ctx) {
+    public static void writeData(Context ctx) {
 
         try {
             FileOutputStream fos = ctx.openFileOutput(FILENAME, ctx.MODE_PRIVATE);
@@ -62,7 +62,7 @@ public class ActivityData {
         }
     }
 
-    static ActivityData readData(Context ctx) throws IOException, JSONException {
+    static void readData(Context ctx) throws IOException, JSONException {
 
         FileInputStream fis = ctx.openFileInput(FILENAME);
         InputStreamReader isr = new InputStreamReader(fis);
@@ -76,21 +76,18 @@ public class ActivityData {
         isr.close();
         String result = sb.toString();
         JSONObject obj = new JSONObject(result);
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         calendar.setTime(new Date(obj.get("startTime").toString()));
-        ActivityData data = new ActivityData(calendar);
-
         JSONArray dataArray = obj.getJSONArray("data");
         for(int i = 0; i < dataArray.length(); i++) {
             String element = dataArray.getString(i);
             JSONObject el = new JSONObject(element);
-            data.getData()[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
-            System.out.println(data.getData()[el.getInt("id")].toJSON());
+            data[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
+            System.out.println(data[el.getInt("id")].toJSON());
         }
-        return data;
     }
 
-    public String getDataJSON() {
+    public static String getDataJSON() {
         JSONObject obj = new JSONObject();
         JSONArray dataArray = new JSONArray();
         for(HourEntry entry : data) {
@@ -109,12 +106,12 @@ public class ActivityData {
         return obj.toString();
     }
 
-    public long getCurrentHour() {
+    public static long getCurrentHour() {
         Calendar now = new GregorianCalendar();
         return (now.getTimeInMillis() - calendar.getTimeInMillis()) /1000 /3600;
     }
 
-    public void clearData(Context ctx) {
+    public static void clearData(Context ctx) {
         try {
             FileOutputStream fos = ctx.openFileOutput(FILENAME, ctx.MODE_PRIVATE);
             fos.write("".getBytes());
@@ -129,14 +126,18 @@ public class ActivityData {
         return calendar;
     }
 
-    public int getStartTime(int id) {
+    public static int getStartTime(int id) {
         Calendar time = new GregorianCalendar();
         time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*(id-1)));
         return time.get(Calendar.HOUR_OF_DAY);
     }
-    public int getEndTime(int id) {
+    public static int getEndTime(int id) {
         Calendar time = new GregorianCalendar();
         time.setTimeInMillis(calendar.getTimeInMillis() + (1000*3600*id));
         return time.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static long getStartTimeMillis() {
+        return calendar.getTimeInMillis();
     }
 }

@@ -27,10 +27,9 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
      * @param resource the id of the rersource
      * @param projects the projects the listitem has to represent
      */
-    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects, ActivityData data) {
+    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects) {
         super(context, resource, projects);
-        entries = projects;
-        this.data = data;
+        entries = ActivityData.getDataArrayList();
     }
     public MainListAdapter(Context context, int resource){
         super(context, resource);
