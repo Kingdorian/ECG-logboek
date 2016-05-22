@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +58,10 @@ public class EditEntryDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 String input = ((EditText) promptView.findViewById(R.id.editTextDialogUserInput)).getText().toString();
                 if(data[hourId]==null){
-                    data[hourId] = new HourEntry(hourId, "");
+                    data[hourId] = new HourEntry(hourId, input);
+                } else {
+                    data[hourId].setDescription(input);
                 }
-                data[hourId].setDescription(input);
                 MainActivity.adapter.notifyDataSetChanged();
             }
         });
@@ -73,5 +75,17 @@ public class EditEntryDialog extends DialogFragment {
 
         return dialogBuilder.create();
     }
+
+//    @Override
+//    public void onDismiss(DialogInterface dialog) {
+//        super.onDismiss(dialog);
+//        String input = ((EditText) getActivity().getLayoutInflater().inflate(R.layout.prompt, null).findViewById(R.id.editTextDialogUserInput)).getText().toString();
+//        if(data[hourId]==null){
+//            data[hourId] = new HourEntry(hourId, "");
+//        }
+//        data[hourId].setDescription(input);
+//        MainActivity.adapter.notifyDataSetChanged();
+//    }
+
 
 }

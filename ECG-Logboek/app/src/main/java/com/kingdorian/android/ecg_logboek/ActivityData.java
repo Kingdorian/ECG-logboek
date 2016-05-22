@@ -1,6 +1,8 @@
 package com.kingdorian.android.ecg_logboek;
 
 import android.content.Context;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.test.ActivityInstrumentationTestCase2;
 import android.text.format.Time;
 
@@ -9,11 +11,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +83,7 @@ public class ActivityData {
         JSONObject obj = new JSONObject(result);
         calendar = Calendar.getInstance();
         calendar.setTime(new Date(obj.get("startTime").toString()));
+        System.out.println("Start time in file: " + obj.get("startTime"));
         JSONArray dataArray = obj.getJSONArray("data");
         for(int i = 0; i < dataArray.length(); i++) {
             String element = dataArray.getString(i);
@@ -85,6 +91,7 @@ public class ActivityData {
             data[el.getInt("id")] = new HourEntry(el.getInt("id"), el.getString("description"));
             System.out.println(data[el.getInt("id")].toJSON());
         }
+
     }
 
     public static String getDataJSON() {
@@ -119,6 +126,10 @@ public class ActivityData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Uri getDataFileURI(Context ctx) throws URISyntaxException {
+        return Uri.parse(ctx.getFilesDir() + File.pathSeparator + FILENAME);
     }
 
 

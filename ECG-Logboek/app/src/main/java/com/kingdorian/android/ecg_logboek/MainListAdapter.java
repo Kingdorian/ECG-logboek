@@ -68,4 +68,10 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
         notifyDataSetChanged();
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        entries = ActivityData.getDataArrayList();
+        super.notifyDataSetChanged();
+    }
+
 }
