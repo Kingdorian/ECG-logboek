@@ -64,6 +64,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             firstStartup();
         }
+
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
+    @Override
+    public void onStart() {
+        ActivityData.setCalendar(Calendar.getInstance());
         // Schedule alarm
         Intent intent = new Intent(this, HourlyNotificationService.class);
         PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
@@ -76,14 +90,14 @@ public class MainActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> arg0, View arg1, int id, long arg3) {
-                        DialogFragment dialog = EditEntryDialog.newInstance(id);
-                        dialog.setCancelable(false);
-                        dialog.show(getFragmentManager(), "Edit hour entry");
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int id, long arg3) {
+                DialogFragment dialog = EditEntryDialog.newInstance(id);
+                dialog.setCancelable(false);
+                dialog.show(getFragmentManager(), "Edit hour entry");
 
-                    }
-                });
+            }
+        });
 
         LayoutInflater li = LayoutInflater.from(this);
         final View promptView = li.inflate(R.layout.prompt, null);
@@ -103,20 +117,6 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-
-    }
-
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-
-    @Override
-    public void onStart() {
         super.onStart();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -163,12 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, FirstTimeActivity.class);
         startActivity(intent);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis((cal.getTimeInMillis()/3600000)*3600000 );
-        ActivityData.setCalendar(cal);
-        System.out.println("StartTime: " + cal.getTime().toString());
 
-        data.writeData(this);
     }
 
     @Override
