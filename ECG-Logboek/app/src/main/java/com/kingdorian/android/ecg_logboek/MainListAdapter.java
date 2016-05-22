@@ -56,9 +56,9 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
             descriptionView.setText(entries.get(position).getDescription()+"");
         }
         TextView timeView = (TextView) v.findViewById(R.id.time);
-
+        long dayNum = 1+((ActivityData.getStartTimeMillis()+(60*60*1000*(1+position)))/(24*60*60*1000)) -  (ActivityData.getStartTimeMillis()/(24*60*60*1000));
         if(timeView != null){
-            timeView.setText(data.getStartTime(entries.get(position).getId())+":00-"+data.getEndTime(entries.get(position).getId())+":00");
+            timeView.setText("Dag" + " " + dayNum + ": " + data.getStartTime(entries.get(position).getId())+":00-"+data.getEndTime(entries.get(position).getId())+":00");
         }
         return v;
     }

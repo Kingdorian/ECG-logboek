@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityData.readData(this);
         } catch (Exception e) {
             firstStartup();
+            this.finish();
+            onStart();
+            System.exit(0);
         }
 
     }
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         System.out.println("Starting alarm!" + new Date(ActivityData.getStartTimeMillis()).toString());
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, ActivityData.getStartTimeMillis(), 10*60*1000, pendingintent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, ActivityData.getStartTimeMillis(), 1*60*1000, pendingintent);
 
         ListView listview = (ListView) findViewById(R.id.listView);
         adapter = new MainListAdapter(this, R.layout.activity_main, ActivityData.getDataArrayList());
@@ -180,42 +183,43 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("message/rfc822");
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"test12345@mailinator.com"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-        intent.putExtra(Intent.EXTRA_TEXT, "body of email");
+        intent.putExtra(Intent.EXTRA_TEXT, ActivityData.getDataJSON());
         String newPath = getExternalCacheDir() + File.pathSeparator + UUID.randomUUID();
         // Copy file
-        try {
-            FileInputStream fis = openFileInput(ActivityData.FILENAME);
-            new File(newPath).createNewFile();
-            FileOutputStream out = new FileOutputStream(newPath);
-            byte[] buf = new byte[1024];
-            int len;
-            while((len=fis.read(buf)) > 0) {
-                System.out.println(new String(buf));
-                out.write(buf, 0, len);
-            }
-            fis.close();
-            out.close();
+//        try {
+//            FileInputStream fis = openFileInput(ActivityData.FILENAME);
+//            new File(newPath).createNewFile();
+//            FileOutputStream out = new FileOutputStream(newPath);
+//            byte[] buf = new byte[1024];
+//            int len;
+//            while((len=fis.read(buf)) > 0) {
+//                System.out.println(new String(buf));
+//                out.write(buf, 0, len);
+//            }
+//            fis.close();
+//            out.close();
 
             ///
             ///
-            File uri = new File(Uri.parse(newPath).toString());
-            FileInputStream fisf = new FileInputStream(new File(Uri.parse(newPath).getPath()));
-            InputStreamReader isr = new InputStreamReader(fisf);
-            BufferedReader buffered = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while((line = buffered.readLine()) != null) {
-                System.out.println("hello: " + line);
-            }
-            buffered.close();
-            isr.close();
+//            File uri = new File(Uri.parse(newPath).toString());
+//            FileInputStream fisf = new FileInputStream(new File(Uri.parse(newPath).getPath()));
+//            InputStreamReader isr = new InputStreamReader(fisf);
+//            BufferedReader buffered = new BufferedReader(isr);
+//            StringBuilder sb = new StringBuilder();
+//            String line;
+//            while((line = buffered.readLine()) != null) {
+//                System.out.println("hello: " + line);
+//            }
+//            buffered.close();
+//            isr.close();
             /// ///
             // Add attachment
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(newPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+//            intent.putExtra(Intent.EXTRA_TEXT)
+//           // intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(newPath));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
         try{
             startActivity(Intent.createChooser(intent, "Send mail..."));
             return true;

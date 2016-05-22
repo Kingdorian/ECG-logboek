@@ -31,11 +31,11 @@ public class FirstTimeActivity extends AppCompatActivity {
         cal.setTimeInMillis((cal.getTimeInMillis()/3600000)*3600000 );
         ActivityData.setCalendar(cal);
         System.out.println("StartTime: " + cal.getTime().toString());
-
         ActivityData.writeData(this);
-        Intent i = new Intent(this, MainActivity.class);
+        //Intent i = new Intent(this, MainActivity.class);
         this.finish();
-        startActivity(i);
+        System.exit(0);
+        //startActivity(i);
     }
 }
 

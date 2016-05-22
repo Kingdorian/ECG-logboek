@@ -44,9 +44,13 @@ public class ActivityData {
 
     public static ArrayList<HourEntry> getDataArrayList() {
         ArrayList<HourEntry> d = new ArrayList<>();
-        for(HourEntry e : data) {
-            if(e!=null){
-                d.add(e);
+        for(int i = 0; i < data.length; i++) {
+            if(data[i]!=null){
+                d.add(data[i]);
+            } else {
+                HourEntry newEntry = new HourEntry(i, "");
+                d.add(newEntry);
+                data[i] = newEntry;
             }
         }
         return d;
@@ -151,4 +155,6 @@ public class ActivityData {
     public static long getStartTimeMillis() {
         return calendar.getTimeInMillis();
     }
+
+    public static long getStartDay() { return getStartTimeMillis()/(1000*60*60*24);}
 }
