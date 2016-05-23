@@ -1,5 +1,7 @@
 package com.kingdorian.android.ecg_logboek;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,24 +27,26 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
      * @param resource the id of the rersource
      * @param projects the projects the listitem has to represent
      */
-    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects, ActivityData data) {
+    public MainListAdapter(Context context, int resource, ArrayList<HourEntry> projects) {
         super(context, resource, projects);
-        entries = projects;
-        this.data = data;
+        entries = ActivityData.getDataArrayList();
     }
     public MainListAdapter(Context context, int resource){
         super(context, resource);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if(v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
             v = vi.inflate(R.layout.listitem, null);
         }
-        HourEntry p = getItem(position);
+
+
+        final HourEntry p = getItem(position);
+
 
         if(p == null) return null;
 
@@ -52,9 +56,9 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
             descriptionView.setText(entries.get(position).getDescription()+"");
         }
         TextView timeView = (TextView) v.findViewById(R.id.time);
-
+        long dayNum = 1+((ActivityData.getStartTimeMillis()+(60*60*1000*(1+position)))/(24*60*60*1000)) -  (ActivityData.getStartTimeMillis()/(24*60*60*1000));
         if(timeView != null){
-            timeView.setText(data.getStartTime(entries.get(position).getId())+":00-"+data.getEndTime(entries.get(position).getId())+":00");
+            timeView.setText("Dag" + " " + dayNum + ": " + data.getStartTime(entries.get(position).getId())+":00-"+data.getEndTime(entries.get(position).getId())+":00");
         }
         return v;
     }
@@ -62,6 +66,12 @@ public class MainListAdapter extends ArrayAdapter<HourEntry> {
     public void setData(ArrayList<HourEntry> he) {
         entries = he;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        entries = ActivityData.getDataArrayList();
+        super.notifyDataSetChanged();
     }
 
 }

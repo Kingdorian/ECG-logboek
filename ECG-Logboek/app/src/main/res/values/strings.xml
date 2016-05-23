@@ -5,4 +5,11 @@
     <string name="betweenTimeSubTitle">&#160;en&#160;</string>
     <string name="afterTimeSubTitle"> &#160;gedaan?</string>
     <string name="ok">ok</string>
+    <string name="notificationTitle">ECG Logboek!</string>
+    <string name="notificationText">Wat heeft u het afgelopen uur gedaan?</string>
+    <string name="title_activity_first_time">FirstTimeActivity</string>
+    <string name="dag">Dag</string>
+    <string name="instructionsTitle">Lees dit zorgvuldig door voordat u begint! //Kan dit dikgedrukt en gecentreerd?</string>
+    <string name="instructions">
+</string>
 </resources>
