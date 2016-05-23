@@ -38,6 +38,9 @@ public class HourlyNotificationService extends IntentService {
                 return;
             }
         }
+        if( ! ActivityData.started()) {
+            return;
+        }
         int hourId = (int)ActivityData.getCurrentHour();
         Resources res = this.getResources();
         NotificationManager notifyManager =
