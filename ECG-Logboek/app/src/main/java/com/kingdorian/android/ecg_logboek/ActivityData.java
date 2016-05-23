@@ -23,7 +23,7 @@ import java.util.Date;
  */
 public class ActivityData {
 
-    private static HourEntry[] data = new HourEntry[2];
+    private static HourEntry[] data = new HourEntry[24];
     private static Calendar calendar;
     private static int length, weight, age;
 

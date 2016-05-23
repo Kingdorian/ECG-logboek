@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         System.out.println("Starting alarm!" + new Date(ActivityData.getStartTimeMillis()).toString());
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, ActivityData.getStartTimeMillis(), 1*60*1000, pendingintent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, ActivityData.getStartTimeMillis(), 60*60*1000, pendingintent);
 
         ListView listview = (ListView) findViewById(R.id.listView);
         adapter = new MainListAdapter(this, R.layout.activity_main, ActivityData.getDataArrayList());
