@@ -14,9 +14,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.SimpleTimeZone;
 
 /**
  * Created by dorian on 9-5-16.
@@ -40,7 +44,7 @@ public class ActivityData {
     }
 
     public static ArrayList<HourEntry> getDataArrayList() {
-        ArrayList<HourEntry> d = new ArrayList<>();
+        ArrayList<HourEntry> d = new ArrayList<HourEntry>();
         for(int i = 0; i < data.length; i++) {
             if(data[i]!=null){
                 d.add(data[i]);
@@ -83,7 +87,14 @@ public class ActivityData {
         String result = sb.toString();
         JSONObject obj = new JSONObject(result);
         calendar = Calendar.getInstance();
-        calendar.setTime(new Date(obj.get("startTime").toString()));
+        String dateString = obj.get("startTime").toString().replace(" CEST ", " GMT+0200 ");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+        try{
+            calendar.setTime(sdf.parse(dateString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
+        }
         started = Boolean.parseBoolean(obj.get("started").toString());
         length= Integer.parseInt(obj.get("length").toString());
         age = Integer.parseInt(obj.get("age").toString());
@@ -172,7 +183,7 @@ public class ActivityData {
     public static void start() {
         calendar = Calendar.getInstance();
         Calendar cal = Calendar.getInstance();
-        calendar.setTimeInMillis(((cal.getTimeInMillis()/3600000)+1)*3600000 );
+        calendar.setTimeInMillis(((cal.getTimeInMillis()/3600000))*3600000 );
         started = true;
     }
 

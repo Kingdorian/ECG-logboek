@@ -55,17 +55,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            ActivityData.readData(this);
-        } catch (Exception e) {
-            firstStartup();
-            this.finish();
-            onStart();
-            System.exit(0);
-        }
+        super.onCreate(savedInstanceState);
+
 
     }
 
@@ -79,13 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
-        ActivityData.setCalendar(Calendar.getInstance());
-        // Schedule alarm
-        Intent intent = new Intent(this, HourlyNotificationService.class);
-        PendingIntent pendingintent = PendingIntent.getService(this, 0, intent, 0);
-        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        System.out.println("Starting alarm!" + new Date(ActivityData.getStartTimeMillis()).toString());
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, ActivityData.getStartTimeMillis(), 60*60*1000, pendingintent);
+
 
         ListView listview = (ListView) findViewById(R.id.listView);
         adapter = new MainListAdapter(this, R.layout.activity_main, ActivityData.getDataArrayList());

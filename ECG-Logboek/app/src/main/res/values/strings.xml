@@ -10,7 +10,7 @@
     <string name="title_activity_first_time">Setup</string>
     <string name="dag">Dag</string>
     <string name="instructionsTitle">Lees dit zorgvuldig door voordat u begint!</string>
-    <string name="instructionsIntro"><![CDATA[U gaat voor 48 uur een logboek bijhouden met uw activiteiten.
+    <string name="instructionsIntro"><![CDATA[U gaat voor 24 uur een logboek bijhouden met uw activiteiten.
 Als eerste volgt een scherm waarop wij een aantal basisgegevens van u vragen.
 Dit zijn: <br>
 &#8226; Leeftijd<br>
@@ -29,8 +29,8 @@ Na verzenden bent u klaar en kunt u de app desgewenst deïnstalleren.<br>
 Hartelijk dank voor het testen van deze app!]]>
 </string>
     <string name="age">Leeftijd:</string>
-    <string name="weight">Gewicht:</string>
-    <string name="length">Lengte:</string>
+    <string name="weight">Gewicht(in kg):</string>
+    <string name="length">Lengte(in cm):</string>
     <string name="back">Terug</string>
     <string name="done">Klaar</string>
     <string name="pleaseData">Vul de volgende gegevens in:</string>
