@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         if (hourId<23&&data.getData()[hourId] != null) {
             ((TextView) promptView.findViewById(R.id.editTextDialogUserInput)).setText(data.getData()[hourId].getDescription());
         }
-        if(ActivityData.getData()[hourId].getDescription().equals("")) {
+        if(hourId<23&&ActivityData.getData()[hourId].getDescription().equals("")) {
             DialogFragment dialog = EditEntryDialog.newInstance(hourId);
             dialog.show(getFragmentManager(), "Edit hour entry");
         }
